@@ -4,3 +4,9 @@ const validateEmail = (email) => {
 
   return regex.test(email);
 };
+const email = "ram@gmail.com";
+const email2 = "djposddfpd.cks";
+const test1 = validateEmail(email);
+const test2 = validateEmail(email2);
+
+console.log(test1, test2);
