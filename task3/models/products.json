@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "name": "Socks",
+    "price": "90",
+    "description": "lorem ipsum dolor",
+    "quantity": "5",
+    "product_type": "Clothings"
+  },
+  {
+    "id": "2",
+    "name": "Fan",
+    "price": "900",
+    "description": "lorem ipsum dolor",
+    "quantity": "7",
+    "product_type": "Electronics"
+  },
+  {
+    "id": "3",
+    "name": "Apple",
+    "price": "400",
+    "description": "lorem ipsum dolor",
+    "quantity": "15",
+    "product_type": "Groceries"
+  },
+  {
+    "id": "4",
+    "name": "Rice",
+    "price": "2500",
+    "description": "lorem ipsum dolor",
+    "quantity": "8",
+    "product_type": "Groceries"
+  },
+  {
+    "id": "5",
+    "name": "levis",
+    "price": "1299",
+    "description": "lorem ipsum dolor",
+    "quantity": "3",
+    "product_type": "Clothings"
+  }
+]
