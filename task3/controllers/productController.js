@@ -57,7 +57,7 @@ exports.getOneProduct = async (req, res) => {
     const product = products.find((product) => product.id === productId);
 
     if (!product) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "The product was not found" });
     }
 
     res.json(product);
@@ -67,7 +67,7 @@ exports.getOneProduct = async (req, res) => {
   }
 };
 
-exports.updatedProducts = async (req, res) => {
+exports.updateProducts = async (req, res) => {
   try {
     const productId = parseInt(req.params.id);
     const productIndex = products.findIndex(
@@ -75,7 +75,7 @@ exports.updatedProducts = async (req, res) => {
     );
 
     if (productIndex === -1) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "Products not found" });
     }
 
     const existingProduct = products[productIndex];
@@ -110,7 +110,7 @@ exports.deleteProducts = async (req, res) => {
     (product) => product.id === parseInt(req.params.id)
   );
   if (!product) {
-    return res.status(404).send("User doesnt exists!!");
+    return res.status(404).send("This Product doesnt exists!!");
   }
   const index = products.indexOf(product);
   products.splice(index, 1);
@@ -124,7 +124,29 @@ exports.deleteProducts = async (req, res) => {
         console.log(error);
         return res.status(500).send("Internal Server Error!!");
       }
-      res.status(200).send("User has been deleted");
+      res.status(200).send("The Product has been deleted");
     }
   );
+};
+
+exports.getOutOfStocks = (req, res) => {
+  const outOfStocks = products.filter((product) => product.quantity < 5);
+
+  if (outOfStocks.length === 0) {
+    return res.json({ message: " Oops!! The product is out of stock" });
+  }
+  return res.status(200).send(outOfStocks);
+};
+
+exports.sortProductsByPrice = (req, res) => {
+  try {
+    const sortedProducts = [...products];
+
+    sortedProducts.sort((a, b) => a.price - b.price);
+
+    res.json(sortedProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 };
