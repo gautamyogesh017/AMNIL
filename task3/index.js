@@ -1,15 +1,14 @@
 const express = require("express");
-const app = express();
-const fs = require(fs);
+const bodyParser = require("body-parser");
+const userRoutes = require("./routes/userRoutes");
 const port = process.env.PORT || 8080;
 require("dotenv").config();
 
-app.get("/", (req, res) => {
-  res.send("GET request to the homepage");
-});
+const app = express();
 
-app.post("/users", (req, res) => {
-  res.send("POST request to the homepage");
-});
+app.use(express.json());
+app.use(bodyParser.json());
+
+app.use("/users", userRoutes);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
