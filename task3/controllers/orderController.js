@@ -37,25 +37,19 @@ exports.addToCart = (req, res) => {
       );
 
       if (existingItemIndex !== -1) {
-        // Item already exists, increase its quantity
         existingCart.items[existingItemIndex].quantity += item.quantity;
       } else {
-        // Item doesn't exist, push new item to the existing user's cart
         existingCart.items.push(item);
       }
     });
 
-    // Recalculate the total price of the cart
     existingCart.total_price = calculateCartTotalPrice(existingCart);
 
-    // Update the existing cart in the array
     cartItems[existingCartIndex] = existingCart;
   } else {
-    // New cart, add it to the array
     cartItems.push(newCart);
   }
 
-  // Write the updated cartItems to the file
   writeJsonFile(cartPath, cartItems);
 
   res.status(200).json(newCart);
@@ -81,10 +75,8 @@ exports.checkout = (req, res) => {
       .json({ error: "Minimum threshold for total price of an order is 100" });
   }
 
-  // Remove the cart as it's being checked out
   cartItems.splice(userCartIndex, 1);
 
-  // Create a new order
   const newOrder = {
     id: orders.length + 1,
     user_id: userCart.user_id,
@@ -97,14 +89,12 @@ exports.checkout = (req, res) => {
 
   orders.push(newOrder);
 
-  // Write the updated orders and cartItems to their respective files
   writeJsonFile(ordersPath, orders);
   writeJsonFile(cartPath, cartItems);
 
   res.status(201).json(newOrder);
 };
 
-// Helper function to calculate the total price of a cart
 function calculateCartTotalPrice(cart) {
   return cart.items
     .reduce((acc, item) => {
@@ -114,7 +104,6 @@ function calculateCartTotalPrice(cart) {
     .toFixed(2);
 }
 
-// Helper function to write JSON data to a file
 function writeJsonFile(filePath, data) {
   fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf8", (err) => {
     if (err) {
