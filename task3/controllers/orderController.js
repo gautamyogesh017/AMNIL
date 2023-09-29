@@ -54,8 +54,18 @@ exports.addToCart = (req, res) => {
 
   res.status(200).json(newCart);
 };
+exports.viewCart = async (req, res) => {
+  const userId = req.params.id;
+  const cart = await Cart.findOne({ user_id: userId }).populate(
+    "products.product"
+  );
+  if (!cart) {
+    return res.status(404).send("Cart not found");
+  }
+  res.status(200).send(cart);
+};
 
-exports.checkout = (req, res) => {
+exports.checkOut = (req, res) => {
   const cartId = parseInt(req.params.cartId);
   const userCartIndex = cartItems.findIndex((cart) => cart.id === cartId);
 
