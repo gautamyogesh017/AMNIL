@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const port = process.env.PORT || 8080;
 require("dotenv").config();
 
@@ -10,5 +12,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use("/users", userRoutes);
+app.use("/product", productRoutes);
+app.use("/orders", orderRoutes);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

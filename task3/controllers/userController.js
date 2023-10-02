@@ -1,9 +1,7 @@
-const users = require("../models/user.json");
+const User = require("../models/user.json");
 const fs = require("fs");
 const path = require("path");
 const usersPath = path.join(__dirname, "../models/user.json");
-
-// creating new user in user json
 
 exports.createUser = async (req, res) => {
   const newUser = {
@@ -12,16 +10,16 @@ exports.createUser = async (req, res) => {
     email: req.body.email,
   };
 
-  const userExists = users.find(
+  const userExists = User.find(
     (existingUser) => existingUser.email === req.body.email
   );
   if (userExists) {
     return res.status(400).send({ message: "Email already exists" });
   }
 
-  users.push(newUser);
+  User.push(newUser);
 
-  fs.writeFile(usersPath, JSON.stringify(users, null, 2), "utf8", (error) => {
+  fs.writeFile(usersPath, JSON.stringify(User, null, 2), "utf8", (error) => {
     if (error) {
       console.log(error);
       return res.status(500).send("Internal Server Error");
@@ -33,8 +31,8 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const userData = fs.readFileSync(usersPath, "utf8");
-    const users = JSON.parse(userData);
-    res.json(users);
+    const User = JSON.parse(userData);
+    res.json(User);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -46,9 +44,9 @@ exports.getOneUser = async (req, res) => {
     const userId = parseInt(req.params.id);
 
     const userData = fs.readFileSync(usersPath, "utf8");
-    const users = JSON.parse(userData);
+    const User = JSON.parse(userData);
 
-    const user = users.find((user) => user.id === userId);
+    const user = User.find((user) => user.id === userId);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -64,22 +62,22 @@ exports.getOneUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    const userIndex = users.findIndex((user) => user.id === userId);
+    const userIndex = User.findIndex((user) => user.id === userId);
 
     if (userIndex === -1) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const existingUser = users[userIndex];
+    const existingUser = User[userIndex];
     const updatedUser = {
       id: existingUser.id,
       name: req.body.name || existingUser.name,
       address: req.body.address || existingUser.address,
     };
 
-    users[userIndex] = updatedUser;
+    User[userIndex] = updatedUser;
 
-    fs.writeFile(usersPath, JSON.stringify(users, null, 2), "utf8", (error) => {
+    fs.writeFile(usersPath, JSON.stringify(User, null, 2), "utf8", (error) => {
       if (error) {
         console.log(error);
         return res.status(500).send("Internal Server error!");
@@ -93,14 +91,14 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const user = users.find((user) => user.id === parseInt(req.params.id));
+  const user = User.find((user) => user.id === parseInt(req.params.id));
   if (!user) {
     return res.status(404).send("User doesnt exists!!");
   }
-  const index = users.indexOf(user);
-  users.splice(index, 1);
+  const index = User.indexOf(user);
+  User.splice(index, 1);
 
-  fs.writeFile(usersPath, JSON.stringify(users, null, 2), "utf8", (error) => {
+  fs.writeFile(usersPath, JSON.stringify(User, null, 2), "utf8", (error) => {
     if (error) {
       console.log(error);
       return res.status(500).send("Internal Server Error!!");
