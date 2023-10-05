@@ -11,6 +11,7 @@ const {
 } = require("../controllers/productController");
 
 router.route("/").get(getAllProducts).post(createProducts);
+
 router
   .route("/:id")
   .get(getOneProduct)
@@ -18,3 +19,5 @@ router
   .delete(deleteProducts);
 
 router.route("/outofstock").get(getOutOfStocks);
+
+module.exports = router;

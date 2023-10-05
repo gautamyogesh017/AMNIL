@@ -5,7 +5,7 @@ const {
   getOrderById,
   viewCart,
   checkOut,
-} = require("../controller/order.controller");
+} = require("../controllers/orderController");
 
 const router = express.Router();
 

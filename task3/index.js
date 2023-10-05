@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use("/users", userRoutes);
-app.use("/product", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/products", productRoutes);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

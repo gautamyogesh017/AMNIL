@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "name": "Socks",
+    "price": "90",
+    "description": "lorem ipsum dolor",
+    "quantity": "5",
+    "product_type": "Clothings"
+  },
+  {
+    "id": "2",
+    "name": "Fan",
+    "price": "900",
+    "description": "lorem ipsum dolor",
+    "quantity": "7",
+    "product_type": "Electronics"
+  }
+]
