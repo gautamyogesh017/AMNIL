@@ -1,3 +1,3 @@
 {
-  "uri": "mongodb+srv://yogeshg:Yogesh@123@cluster0.ln6ks0l.mongodb.net/?retryWrites=true&w=majority"
+  "uri": "mongodb://localhost:27017/task4"
 }

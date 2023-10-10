@@ -1,15 +1,34 @@
 const User = require("../../models/userSchema");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res) => {
-  const { id, name, email } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
+    // Check if a user with the same email exists
+    const existingUser = await User.findOne({ email: req.body.email });
+
     if (existingUser) {
       return res.status(400).send({ message: "Email already exists" });
     }
-    const newUser = new User({ id, name, email });
-    await newUser.save();
-    res.status(201).send(newUser);
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+    // Create a new user with the hashed password
+    const newUser = new User({
+      email: req.body.email,
+      name: req.body.name,
+      password: hashedPassword,
+    });
+
+    // Save the user to the database
+    const savedUser = await newUser.save();
+
+    res.status(200).send({
+      message: "User Registered",
+      userDetail: savedUser,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -74,6 +93,35 @@ exports.deleteUser = async (req, res) => {
     }
 
     res.status(200).send("User has been deleted");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      res.status(400);
+      throw new Error("All fields are Mandatory");
+    }
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const accessToken = jwt.sign(
+        {
+          user: {
+            username: user.username,
+            email: user.email,
+            id: user.id,
+          },
+        },
+        process.env.JWT_TOKEN,
+        { expiresIn: "15m" }
+      );
+      res.status(200).json({ accessToken });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
