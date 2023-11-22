@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-exports.register = async (req, res) => {
+exports.Register = async (req, res) => {
   try {
     const userExisting = await User.findOne({
       email: req.body.email && req.body.name,
